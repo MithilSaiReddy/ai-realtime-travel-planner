@@ -4,7 +4,11 @@ import warnings
 
 from datetime import datetime
 
-from realtime_travel_planner.crew import RealtimeTravelPlanner
+from crew import RealtimeTravelPlanner
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
@@ -64,3 +68,5 @@ def test():
 
     except Exception as e:
         raise Exception(f"An error occurred while testing the crew: {e}")
+
+run()
