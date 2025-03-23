@@ -1,16 +1,32 @@
-# research_task:
-#   description: >
-#     Conduct a thorough research about {topic}
-#     Make sure you find any interesting and relevant information given
-#     the current year is {current_year}.
-#   expected_output: >
-#     A list with 10 bullet points of the most relevant information about {topic}
-#   agent: repo
-reporting_task:
+research_task:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Conduct thorough research on travel options for {location} starting {date} for {days} days. Focus on:
+    1. Detailed itineraries for each day with time slots in 24-hour format.
+    2. Travel attractions and landmarks.
+    3. Restaurant recommendations featuring {preferred_food} cuisine.
+    4. Accommodation options and local experiences.
+    5. Overall travel plan keeping in mind a budget of {budget}.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: weatherAgent
+    A comprehensive research document covering all travel aspects for {location}, including a day-by-day itinerary with exact times.
+  agent: local_analyst
+
+analysis_task_budget:
+  description: >
+    Create a budget-friendly travel plan for {location} that includes a detailed itinerary with daily schedules in 24-hour format,
+    meal timings, and cost breakdowns for activities and restaurants.
+  expected_output: >
+    A comprehensive budget plan for {location}, including a day-by-day itinerary, restaurant recommendations, and timing details.
+  agent: budget_planner
+  context:
+    - research_task
+  output_file: output/budget_travel_plan.md
+
+analysis_task_news:
+  description: >
+    Analyze the latest travel trends, safety information, local events, and restaurant reviews for {location}.
+  expected_output: >
+    A report summarizing key trends, safety info, local events, and dining recommendations for travelers.
+  agent: news_analyst
+  context:
+    - research_task
+  output_file: output/news_travel_report.md

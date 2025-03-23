@@ -1,83 +1,58 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-
-# If you want to run a snippet of code before or after the crew starts,
-# you can use the @before_kickoff and @after_kickoff decorators
-# https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
+import os
 
 @CrewBase
-class RealtimeTravelPlanner():
-    """RealtimeTravelPlanner crew"""
+class ResearchCrew():
+    """Research crew for comprehensive travel planning"""
 
-    # Learn more about YAML configuration files here:
-    # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
-    # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
-    agents_config = 'config/agents.yaml'
-    tasks_config = 'config/tasks.yaml'
-    
     @agent
-    def weatherAgent(self) -> Agent:
+    def local_analyst(self) -> Agent:
         return Agent(
-            config=self.agents_config['weatherAgent'],
+            config=self.agents_config['local_analyst'],
             verbose=True
         )
-    
-    # If you would like to add tools to your agents, you can learn more about it here:
-    # https://docs.crewai.com/concepts/agents#agent-tools
-    # @agent
-    # def LocalAnalystAgent(self) -> Agent:
-    #     return Agent(
-    #         config=self.agents_config['reporting_analyst'],
-    #         verbose=True
-    #     )
 
-    # @agent
-    # def BudgetAnalystAgent(self) -> Agent:
-    #     return Agent(
-    #         config=self.agents_config['reporting_analyst'],
-    #         verbose=True
-    #     )
-    
-    # @agent
-    # def TrafficAnalystAgent(self) -> Agent:
-    #     return Agent(
-    #         config=self.agents_config['reporting_analyst'],
-    #         verbose=True
-    #     )
-    
-    # @agent
-    # def NewsAnalystAgent(self) -> Agent:
-    #     return Agent(
-    #         config=self.agents_config['reporting_analyst'],
-    #         verbose=True
-    #     )
+    @agent
+    def budget_planner(self) -> Agent:
+        return Agent(
+            config=self.agents_config['budget_planner'],
+            verbose=True
+        )
 
-    # To learn more about structured task outputs,
-    # task dependencies, and task callbacks, check out the documentation:
-    # https://docs.crewai.com/concepts/tasks#overview-of-a-task
-    # @task
-    # def research_task(self) -> Task:
-    #     return Task(
-    #         config=self.tasks_config['research_task'],
-    #     )
+    @agent
+    def news_analyst(self) -> Agent:
+        return Agent(
+            config=self.agents_config['news_analyst'],
+            verbose=True
+        )
 
     @task
-    def reporting_task(self) -> Task:
+    def research_task(self) -> Task:
         return Task(
-            config=self.tasks_config['reporting_task'],
-            output_file='report.md'
+            config=self.tasks_config['research_task']
+        )
+
+    @task
+    def analysis_task_budget(self) -> Task:
+        return Task(
+            config=self.tasks_config['analysis_task_budget'],
+            output_file='output/budget_travel_plan.md'
+        )
+
+    @task
+    def analysis_task_news(self) -> Task:
+        return Task(
+            config=self.tasks_config['analysis_task_news'],
+            output_file='output/news_travel_report.md'
         )
 
     @crew
     def crew(self) -> Crew:
-        """Creates the RealtimeTravelPlanner crew"""
-        # To learn how to add knowledge sources to your crew, check out the documentation:
-        # https://docs.crewai.com/concepts/knowledge#what-is-knowledge
-
+        """Creates the travel planning crew"""
         return Crew(
-            agents=self.agents, # Automatically created by the @agent decorator
-            tasks=self.tasks, # Automatically created by the @task decorator
+            agents=self.agents,
+            tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
-            # process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
         )

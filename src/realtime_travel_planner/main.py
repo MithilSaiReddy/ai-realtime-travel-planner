@@ -1,72 +1,43 @@
 #!/usr/bin/env python
 import sys
-import warnings
+import os
 
-from datetime import datetime
+# Add the src directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
-from crew import RealtimeTravelPlanner
+from realtime_travel_planner.crew import ResearchCrew  # Import from the correct module
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
-warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
-
-# This main file is intended to be a way for you to run your
-# crew locally, so refrain from adding unnecessary logic into this file.
-# Replace with inputs you want to test with, it will automatically
-# interpolate any tasks and agents information
+# Create output directory if it doesn't exist
+os.makedirs('output', exist_ok=True)
 
 def run():
     """
-    Run the crew.
+    Run the research crew with user-defined inputs.
     """
+    # Gather user inputs
+    travel_date = input("Enter the start date (YYYY-MM-DD): ").strip()
+    num_days = input("Enter the number of days for the trip: ").strip()
+    location = input("Enter the travel location: ").strip()
+    preferred_food = input("Enter your preferred cuisine or food type: ").strip()
+    budget = input("Enter your budget (e.g., in USD): ").strip()
+
+    # Prepare inputs with new keys for itinerary-specific information.
     inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
+        'date': travel_date,
+        'days': num_days,
+        'location': location,
+        'preferred_food': preferred_food,
+        'budget': budget
     }
-    
-    try:
-        RealtimeTravelPlanner().crew().kickoff(inputs=inputs)
-    except Exception as e:
-        raise Exception(f"An error occurred while running the crew: {e}")
 
+    # Create and run the research crew
+    result = ResearchCrew().crew().kickoff(inputs=inputs)
 
-def train():
-    """
-    Train the crew for a given number of iterations.
-    """
-    inputs = {
-        "topic": "AI LLMs"
-    }
-    try:
-        RealtimeTravelPlanner().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
+    # Print the final report
+    print("\n\n=== FINAL REPORT ===\n\n")
+    print(result.raw)
 
-    except Exception as e:
-        raise Exception(f"An error occurred while training the crew: {e}")
+    print("\n\nReport has been saved to output/report.md")
 
-def replay():
-    """
-    Replay the crew execution from a specific task.
-    """
-    try:
-        RealtimeTravelPlanner().crew().replay(task_id=sys.argv[1])
-
-    except Exception as e:
-        raise Exception(f"An error occurred while replaying the crew: {e}")
-
-def test():
-    """
-    Test the crew execution and returns the results.
-    """
-    inputs = {
-        "topic": "AI LLMs",
-        "current_year": str(datetime.now().year)
-    }
-    try:
-        RealtimeTravelPlanner().crew().test(n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs)
-
-    except Exception as e:
-        raise Exception(f"An error occurred while testing the crew: {e}")
-
-run()
+if __name__ == "__main__":
+    run()
