@@ -18,14 +18,35 @@ class RealtimeTravelPlanner():
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
-    def researcher(self) -> Agent:
+    def LocalAnalystAgent(self) -> Agent:
         return Agent(
             config=self.agents_config['researcher'],
             verbose=True
         )
 
     @agent
-    def reporting_analyst(self) -> Agent:
+    def BudgetAnalystAgent(self) -> Agent:
+        return Agent(
+            config=self.agents_config['reporting_analyst'],
+            verbose=True
+        )
+    
+    @agent
+    def WeatherAnalystAgent(self) -> Agent:
+        return Agent(
+            config=self.agents_config['reporting_analyst'],
+            verbose=True
+        )
+    
+    @agent
+    def TrafficAnalystAgent(self) -> Agent:
+        return Agent(
+            config=self.agents_config['reporting_analyst'],
+            verbose=True
+        )
+    
+    @agent
+    def NewsAnalystAgent(self) -> Agent:
         return Agent(
             config=self.agents_config['reporting_analyst'],
             verbose=True
