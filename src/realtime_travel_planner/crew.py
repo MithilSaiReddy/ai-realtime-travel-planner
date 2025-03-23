@@ -14,52 +14,52 @@ class RealtimeTravelPlanner():
     # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
     agents_config = 'config/agents.yaml'
     tasks_config = 'config/tasks.yaml'
-
+    
+    @agent
+    def weatherAgent(self) -> Agent:
+        return Agent(
+            config=self.agents_config['weatherAgent'],
+            verbose=True
+        )
+    
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
-    @agent
-    def LocalAnalystAgent(self) -> Agent:
-        return Agent(
-            config=self.agents_config['researcher'],
-            verbose=True
-        )
+    # @agent
+    # def LocalAnalystAgent(self) -> Agent:
+    #     return Agent(
+    #         config=self.agents_config['reporting_analyst'],
+    #         verbose=True
+    #     )
 
-    @agent
-    def BudgetAnalystAgent(self) -> Agent:
-        return Agent(
-            config=self.agents_config['reporting_analyst'],
-            verbose=True
-        )
+    # @agent
+    # def BudgetAnalystAgent(self) -> Agent:
+    #     return Agent(
+    #         config=self.agents_config['reporting_analyst'],
+    #         verbose=True
+    #     )
     
-    @agent
-    def WeatherAnalystAgent(self) -> Agent:
-        return Agent(
-            config=self.agents_config['reporting_analyst'],
-            verbose=True
-        )
+    # @agent
+    # def TrafficAnalystAgent(self) -> Agent:
+    #     return Agent(
+    #         config=self.agents_config['reporting_analyst'],
+    #         verbose=True
+    #     )
     
-    @agent
-    def TrafficAnalystAgent(self) -> Agent:
-        return Agent(
-            config=self.agents_config['reporting_analyst'],
-            verbose=True
-        )
-    
-    @agent
-    def NewsAnalystAgent(self) -> Agent:
-        return Agent(
-            config=self.agents_config['reporting_analyst'],
-            verbose=True
-        )
+    # @agent
+    # def NewsAnalystAgent(self) -> Agent:
+    #     return Agent(
+    #         config=self.agents_config['reporting_analyst'],
+    #         verbose=True
+    #     )
 
     # To learn more about structured task outputs,
     # task dependencies, and task callbacks, check out the documentation:
     # https://docs.crewai.com/concepts/tasks#overview-of-a-task
-    @task
-    def research_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['research_task'],
-        )
+    # @task
+    # def research_task(self) -> Task:
+    #     return Task(
+    #         config=self.tasks_config['research_task'],
+    #     )
 
     @task
     def reporting_task(self) -> Task:
